@@ -43,3 +43,5 @@ On top of the better outcome, the best outcome would allow the player to modify 
 ## In a paragraph or more, outline your next steps. What new skills will you need to acquire? What topics will you need to research? If working with one of two classmates, who will do what?
 
 First, we will need to learn PyGame in order to get a better understanding on how video game logic and GUI logic can be applied to ERS.  We will need to research timing as well as how to create a game with different players trying to achieve the same objective, including bot players.  For the best outcome, we might need to learn how to make certain rule functions flexible based on user input on a GUI, or to allow them to modify a list of cards if they decide to modify the deck.
+
+Because we are both new to PyGame, we do not know hot to split the work yet. Once we gain a better understanding of the scope of the project and PyGame, then we will be able to have a more clear view on how the work will be divided. 
