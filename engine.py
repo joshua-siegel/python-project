@@ -4,10 +4,10 @@ from models import *
 
 class GameState(Enum):
     PLAYING = 0
-    SNAPPING = 1
+    SLAPPING = 1
     ENDED = 2
 
-class SnapEngine:
+class RatEngine:
     deck = None
     player1 = None
     player2 = None
@@ -42,7 +42,7 @@ class SnapEngine:
 
     # Handle when player wins a round
     def winRound(self, player):
-        self.state = GameState.SNAPPING
+        self.state = GameState.SLAPPING
         player.hand.extend(self.pile.popAll())
         self.pile.clear()
 
@@ -59,34 +59,58 @@ class SnapEngine:
             self.pile.add(self.currentPlayer.play())
             self.switchPlayer()
 
-        # Check is Snap is called
-        snapCaller = None
-        nonSnapCaller = None
-        isSnap = self.pile.isSnap()
-
-        if (key == self.player1.snapKey):
-            snapCaller = self.player1
-            nonSnapCaller = self.player2
-        elif (key == self.player2.snapKey):
-            snapCaller = self.player2
-            nonSnapCaller = self.player1
-
-        # Check Snap Result
-        if isSnap and snapCaller:
-            self.winRound(snapCaller)
-            self.result = {
-                "winner": snapCaller,
-                "isSnap": True,
-                "snapCaller": snapCaller
+        # Check is Slap is called and Assign Rules
+        slapCaller = None
+        nonSlapCaller = None
+        slapRules = {
+            "2InARow": True,
+            "sandwich": True,
+            "addTo10": True,
+            "sandwich10": True,
+            "marriage": True,
+            "divorce": True,
+            "topBottom": True,
+            "topBottomAdd": False,
+            "topBottomDiv": False,
+            "consec4": True
             }
-            self.winRound(snapCaller)
-        elif not isSnap and snapCaller:
-            self.result = {
-                "winner": nonSnapCaller,
-                "isSnap": False,
-                "snapCaller": snapCaller
+        slapMods = {
+            "sandLength": 2,
+            "addTo10Sum": 10,
+            "sand10Length": 2,
+            "sand10Sum": 10,
+            "marDivCards": [12, 13],
+            "divSuitors": 2,
+            "topBottomSum": 10,
+            "consecLength": 4,
+            "ascending": True,
+            "descending": True
             }
-            self.winRound(nonSnapCaller)
+        isSlap = self.pile.isSlap(slapRules, slapMods)
+
+        if (key == self.player1.slapKey):
+            slapCaller = self.player1
+            nonSlapCaller = self.player2
+        elif (key == self.player2.slapKey):
+            slapCaller = self.player2
+            nonSlapCaller = self.player1
+
+        # Check Slap Result
+        if isSlap and slapCaller:
+            self.winRound(slapCaller)
+            self.result = {
+                "winner": slapCaller,
+                "isSlap": True,
+                "slapCaller": slapCaller
+            }
+            self.winRound(slapCaller)
+        elif not isSlap and slapCaller:
+            self.result = {
+                "winner": nonSlapCaller,
+                "isSlap": False,
+                "slapCaller": slapCaller
+            }
+            self.winRound(nonSlapCaller)
 
         # Check if player runs out of cards
         if len(self.player1.hand) == 0:

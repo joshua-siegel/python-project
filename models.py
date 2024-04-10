@@ -8,6 +8,8 @@ class Suits(Enum):
     HEART = 2
     DIAMOND = 3
 
+### GAME MODELS ###
+
 # Card Model
 class Card:
     suit = None
@@ -67,22 +69,76 @@ class Pile:
     def clear(self):
         self.cards = []
 
-    # Checks if snap is valid
-    def isSnap(self):
-        if (len(self.cards) > 1):
-            return (self.cards[-1].value == self.cards[-2].value)
-        return False
+    # Checks if slap is valid
+    def isSlap(self, rules, mods):
+        validity = []
 
+        # 2 in a Row
+        if (len(self.cards) > 1) and rules["2InARow"]:
+            validity.append(self.cards[-1].value == self.cards[-2].value)
+
+        # Sandwich 
+        if (len(self.cards) > mods["sandLength"]) and rules["sandwich"]:
+            validity.append(self.cards[-1].value == self.cards[-1 - mods["sandLength"]].value)
+
+        # Add to 10
+        if (len(self.cards) > 1) and rules["addTo10"]:
+            validity.append(self.cards[-1].value + self.cards[-2].value == mods["addTo10Sum"])
+
+        # 10 Sandwich
+        if (len(self.cards) > mods["sand10Length"]) and rules["sandwich10"]:
+            validity.append(self.cards[-1].value + self.cards[-1 - mods["sand10Length"]].value == mods["sand10Sum"])
+
+        # Marriage
+        if (len(self.cards) > 1) and rules["marriage"]:
+            validity.append(self.cards[-1].value == mods["marDivCards"][0] and self.cards[-2].value == mods["marDivCards"][1])
+            validity.append(self.cards[-1].value == mods["marDivCards"][1] and self.cards[-2].value == mods["marDivCards"][0])
+
+        # Divorce
+        if (len(self.cards) > mods["divSuitors"]) and rules["marriage"]:
+            validity.append(self.cards[-1].value == mods["marDivCards"][0] and self.cards[-1 - mods["divSuitors"]].value == mods["marDivCards"][1])
+            validity.append(self.cards[-1].value == mods["marDivCards"][1] and self.cards[-1 - mods["divSuitors"]].value == mods["marDivCards"][0])
+
+        # Top Bottom
+        if (len(self.cards) > 1) and rules["topBottom"]:
+            validity.append(self.cards[-1].value == self.cards[0].value)
+
+        # (EXTRA) Top Bottom: Addition
+        if (len(self.cards) > 1) and rules["topBottom"]:
+            validity.append(self.cards[-1].value + self.cards[0].value == mods["topBottomSum"])
+
+        # (EXTRA) Top Bottom: Total Divorce
+        if (len(self.cards) > 1) and rules["topBottom"]:
+            validity.append(self.cards[-1].value == mods["marDivCards"][0] and self.cards[0].value == mods["marDivCards"][1])
+            validity.append(self.cards[-1].value == mods["marDivCards"][1] and self.cards[0].value == mods["marDivCards"][0])
+
+        # Consecutive 4
+        if (len(self.cards) >= mods["consecLength"]) and rules["consec4"]:
+            # Extract the last 4 Numbers
+            lastFour = self.cards[-mods["consecLength"]:]
+
+            # Check if the difference between adjacent numbers is 1 for ascending and descending
+            if mods["ascending"]:
+                if all(lastFour[i + 1].value - lastFour[i].value == 1 for i in range(mods["consecLength"] - 1)):
+                    validity.append(True)
+                        
+            if mods["descending"]:
+                if all(lastFour[i + 1].value - lastFour[i].value == -1 for i in range(mods["consecLength"] - 1)):
+                    validity.append(True)
+
+        return any(validity)
+        
+# Player Model
 class Player:
     hand = None
     flipKey = None
-    snapKey = None
+    slapKey = None
     name = None
 
-    def __init__(self, name, flipKey, snapKey):
+    def __init__(self, name, flipKey, slapKey):
         self.hand = []
         self.flipKey = flipKey
-        self.snapKey = snapKey
+        self.slapKey = slapKey
         self.name = name
 
     # Draws card into hand from dealer
@@ -92,3 +148,6 @@ class Player:
     # Plays card from hand
     def play(self):
         return self.hand.pop(0)
+
+
+

@@ -7,7 +7,7 @@ bounds = (1024, 768)
 window = pygame.display.set_mode(bounds)
 pygame.display.set_caption("Rat Slapper")
 
-gameEngine = SnapEngine()
+gameEngine = RatEngine()
 
 # Load back of card image
 cardBack = pygame.image.load('images/BACK.png')
@@ -37,12 +37,12 @@ def renderGame(window):
         text = font.render(gameEngine.currentPlayer.name + " to flip", True, (255,255,255))
         window.blit(text, (20,50))
 
-    if gameEngine.state == GameState.SNAPPING:
+    if gameEngine.state == GameState.SLAPPING:
         result = gameEngine.result
-        if result["isSnap"] == True:
-            message = "Winning Snap! by " + result["winner"].name
+        if result["isSlap"] == True:
+            message = "Winning Slap! by " + result["winner"].name
         else:
-            message = "False Snap! by " + result["snapCaller"].name + ". " + result["winner"].name + " wins!"
+            message = "False Slap! by " + result["slapCaller"].name + ". " + result["winner"].name + " wins!"
         text = font.render(message, True, (255,255,255))
         window.blit(text, (20,50))
 
@@ -66,6 +66,6 @@ while run:
     renderGame(window)
     pygame.display.update()
 
-    if gameEngine.state == GameState.SNAPPING:
+    if gameEngine.state == GameState.SLAPPING:
         pygame.time.delay(3000)
         gameEngine.state = GameState.PLAYING
