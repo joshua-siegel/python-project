@@ -18,7 +18,7 @@ def game_screen():
     # Draws appropriate UI to window based on state and result of gameEngine
     def renderGame(window):
         # Draw general UI
-        window.fill((15,0,169))
+        window.fill((202, 228, 241))
         font = pygame.font.SysFont('comicsans',60, True)
 
         window.blit(cardBack, (100, 200))
