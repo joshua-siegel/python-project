@@ -15,6 +15,7 @@ class RatEngine:
     state = None
     currentPlayer = None
     result = None
+    rules = None
 
     def __init__(self):
         self.deck = Deck()
@@ -25,6 +26,7 @@ class RatEngine:
         self.deal()
         self.currentPlayer = self.player1
         self.state = GameState.PLAYING
+        self.rules = Rules()
 
     # Deals the cards
     def deal(self):
@@ -59,34 +61,10 @@ class RatEngine:
             self.pile.add(self.currentPlayer.play())
             self.switchPlayer()
 
-        # Check is Slap is called and Assign Rules
+        # Check is Slap is called
         slapCaller = None
         nonSlapCaller = None
-        slapRules = {
-            "2InARow": True,
-            "sandwich": True,
-            "addTo10": True,
-            "sandwich10": True,
-            "marriage": True,
-            "divorce": True,
-            "topBottom": True,
-            "topBottomAdd": False,
-            "topBottomDiv": False,
-            "consec4": True
-            }
-        slapMods = {
-            "sandLength": 2,
-            "addTo10Sum": 10,
-            "sand10Length": 2,
-            "sand10Sum": 10,
-            "marDivCards": [12, 13],
-            "divSuitors": 2,
-            "topBottomSum": 10,
-            "consecLength": 4,
-            "ascending": True,
-            "descending": True
-            }
-        isSlap = self.pile.isSlap(slapRules, slapMods)
+        isSlap = self.pile.isSlap(self.rules.slapRules, self.rules.slapMods)
 
         if (key == self.player1.slapKey):
             slapCaller = self.player1

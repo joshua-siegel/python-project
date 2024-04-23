@@ -155,8 +155,30 @@ class Rules:
     slapMods = None
 
     def __init__(self):
-        self.slapRules = {}
-        self.slapMods = {}
+        self.slapRules = {
+            "2InARow": True,
+            "sandwich": True,
+            "addTo10": True,
+            "sandwich10": True,
+            "marriage": True,
+            "divorce": True,
+            "topBottom": True,
+            "topBottomAdd": False,
+            "topBottomDiv": False,
+            "consec4": True
+            }
+        self.slapMods = {
+            "sandLength": 2,
+            "addTo10Sum": 10,
+            "sand10Length": 2,
+            "sand10Sum": 10,
+            "marDivCards": [12, 13],
+            "divSuitors": 2,
+            "topBottomSum": 10,
+            "consecLength": 4,
+            "ascending": True,
+            "descending": True
+            }
 
 # Button Model
 class Button():
