@@ -149,7 +149,16 @@ class Player:
     def play(self):
         return self.hand.pop(0)
 
-#button class
+# Rules Model
+class Rules:
+    slapRules = None
+    slapMods = None
+
+    def __init__(self):
+        self.slapRules = {}
+        self.slapMods = {}
+
+# Button Model
 class Button():
 	def __init__(self, x, y, image, scale):
 		width = image.get_width()
@@ -183,3 +192,15 @@ class Button():
 		if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
 			return True
 		return False
+
+
+
+
+
+
+
+
+
+
+
+

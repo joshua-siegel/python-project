@@ -61,7 +61,6 @@ def game_screen():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
-                pygame.quit()
             if event.type == pygame.KEYDOWN:
                 key = event.key
 

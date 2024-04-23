@@ -1,7 +1,6 @@
 import pygame
 from models import *
 from game import * 
-from instructions import * 
 
 pygame.init()
 
@@ -46,17 +45,16 @@ def main_menu():
 			if event.type == pygame.MOUSEBUTTONDOWN:
 				if play_button.checkForInput(MENU_MOUSE_POS):
 					play_game()
-				if rules_button.checkForInput(MENU_MOUSE_POS):
-					show_instructions()
-
+				# if OPTIONS_BUTTON.checkForInput(MENU_MOUSE_POS):
+				# 	options()
+				# if QUIT_BUTTON.checkForInput(MENU_MOUSE_POS):
+				# 	pygame.quit()
+				# 	sys.exit()
 
 		pygame.display.update()
 
 def play_game():
 	game_screen()
-
-def show_instructions():
-	instructions_screen()
 
 main_menu()
 pygame.quit()
