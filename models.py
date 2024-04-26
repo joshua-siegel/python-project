@@ -127,7 +127,44 @@ class Pile:
                     validity.append(True)
 
         return any(validity)
+
+    # Check Face Card Status (Off, On, and Over)
+    def faceStatus(self, rules, mods):
+        # Create list of card values
+        cardValues = [card.value for card in self.cards]
+        print(cardValues)
         
+        # Determine Active Face Card Rule
+        if (len(cardValues) > 0):
+            # Find most recent face card value if one exists in the pile, status is off if none exist in pile
+            faceValues = [value for value in cardValues if value in rules.values()]
+            if len(faceValues) > 0:
+                mostRecent = faceValues[-1]
+            else:
+                print("Off")
+                return "Off"
+
+            # Correspond most recent face card value with active face card rule
+            activeFace = [rule for rule in rules if rules[rule] == mostRecent][0]
+            print(activeFace)
+
+            # Rule Execution
+            if activeFace == "stopper" or cardValues[-1] == mostRecent:
+                print("Off")
+                return "Off"
+
+            for rule in rules:
+                if rule == "stopper":
+                    continue
+                if activeFace == rule:
+                    playChances = mods[rule]
+                    chancesPlayed = cardValues[::-1].index(rules[rule])
+                    if playChances - chancesPlayed > 0:
+                        print("On")
+                        return "On"
+                    print("Over")
+                    return "Over"
+
 # Player Model
 class Player:
     hand = None
@@ -153,6 +190,8 @@ class Player:
 class Rules:
     slapRules = None
     slapMods = None
+    faceRules = None
+    faceMods = None
 
     def __init__(self):
         self.slapRules = {
@@ -178,6 +217,19 @@ class Rules:
             "consecLength": 4,
             "ascending": True,
             "descending": True
+            }
+        self.faceRules = {
+            "jack": 11,
+            "queen": 12,
+            "king": 13,
+            "ace": 1,
+            "stopper": 10
+            }
+        self.faceMods = {
+            "jack": 1,
+            "queen": 2,
+            "king": 3,
+            "ace": 4,
             }
 
 # Button Model

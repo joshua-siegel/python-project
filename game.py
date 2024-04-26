@@ -10,6 +10,8 @@ pygame.display.set_caption("Rat Slapper")
 
 def game_screen():
     gameEngine = RatEngine()
+    pile = Pile()
+    rules = Rules()
 
     # Load back of card image
     cardBack = pygame.image.load('images/BACK.png')
@@ -48,6 +50,12 @@ def game_screen():
             text = font.render(message, True, (255,255,255))
             window.blit(text, (20,50))
 
+        if gameEngine.state == GameState.FACE:
+            result = gameEngine.result
+            message = result["winner"].name + " wins by face card played!"
+            text = font.render(message, True, (255,255,255))
+            window.blit(text, (20,50))
+
         if gameEngine.state == GameState.ENDED:
             result = gameEngine.result
             message = "Game Over! " + result["winner"].name + " wins!"
@@ -68,6 +76,6 @@ def game_screen():
         renderGame(window)
         pygame.display.update()
 
-        if gameEngine.state == GameState.SLAPPING:
+        if gameEngine.state == GameState.SLAPPING or gameEngine.state == GameState.FACE:
             pygame.time.delay(3000)
             gameEngine.state = GameState.PLAYING

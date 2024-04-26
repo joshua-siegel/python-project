@@ -5,7 +5,8 @@ from models import *
 class GameState(Enum):
     PLAYING = 0
     SLAPPING = 1
-    ENDED = 2
+    FACE = 2
+    ENDED = 3
 
 class RatEngine:
     deck = None
@@ -44,7 +45,10 @@ class RatEngine:
 
     # Handle when player wins a round
     def winRound(self, player):
-        self.state = GameState.SLAPPING
+        if self.pile.faceStatus(self.rules.faceRules, self.rules.faceMods) == "Over":
+            self.state = GameState.FACE
+        else: 
+            self.state = GameState.SLAPPING
         player.hand.extend(self.pile.popAll())
         self.pile.clear()
 
@@ -56,10 +60,12 @@ class RatEngine:
         if self.state == GameState.ENDED:
             return
 
-        # Check if Flip
+        # Check if Flip and Face Card Status
         if key == self.currentPlayer.flipKey:
             self.pile.add(self.currentPlayer.play())
-            self.switchPlayer()
+            faceStatus = self.pile.faceStatus(self.rules.faceRules, self.rules.faceMods)
+            if faceStatus != "On":
+                self.switchPlayer()
 
         # Check is Slap is called
         slapCaller = None
@@ -89,6 +95,13 @@ class RatEngine:
                 "slapCaller": slapCaller
             }
             self.winRound(nonSlapCaller)
+
+        # Check if a player wins by face card rule
+        if (not (isSlap and slapCaller)) and faceStatus == "Over":
+            self.result = {
+                "winner": self.currentPlayer,
+            }
+            self.winRound(self.currentPlayer)
 
         # Check if player runs out of cards
         if len(self.player1.hand) == 0:
