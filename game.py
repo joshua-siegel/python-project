@@ -10,8 +10,10 @@ pygame.display.set_caption("Rat Slapper")
 
 def game_screen():
     gameEngine = RatEngine()
-    pile = Pile()
-    rules = Rules()
+    # pile = 
+    Pile()
+    # rules = 
+    Rules()
 
     # Load back of card image
     cardBack = pygame.image.load('images/BACK.png')
@@ -65,10 +67,11 @@ def game_screen():
     # Run Game Loop (Listen for User Input, Process Input w/ Engine Play Method, Update UI w/ Result)
     run = True
     while run:
-        key = None;
+        key = None
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
+                pygame.quit()
             if event.type == pygame.KEYDOWN:
                 key = event.key
 

@@ -54,6 +54,7 @@ class RatEngine:
 
     # Processes logic for key pressed
     def play(self, key):
+
         if key == None:
             return
 
