@@ -61,6 +61,7 @@ class RatEngine:
         if self.state == GameState.ENDED:
             return
 
+        faceStatus = None
         # Check if Flip and Face Card Status
         if key == self.currentPlayer.flipKey:
             self.pile.add(self.currentPlayer.play())
