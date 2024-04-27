@@ -49,7 +49,9 @@ def main_menu():
 		#event handler
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
-				pygame.quit()
+				run = False
+				break
+
 			if event.type == pygame.MOUSEBUTTONDOWN:
 				if play_button.checkForInput(MENU_MOUSE_POS):
 					play_game()
@@ -64,7 +66,9 @@ def main_menu():
 				# 	pygame.quit()
 				# 	sys.exit()
 
-		pygame.display.update()
+		pygame.display.flip()
+	pygame.quit()
+
 
 def play_game():
 	game_screen()
@@ -115,6 +119,8 @@ def show_instructions():
 
 		pygame.display.update()
 
-
+def configuration_screen():
+	
+	pass
 main_menu()
 pygame.quit()
