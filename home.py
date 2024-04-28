@@ -133,63 +133,62 @@ def configuration_screen():
 	window.blit(textHead, (100, 50))
 
 	# Toggle buttons
- 
 	toggle_rect_2InARow = {
-		'shape': pygame.Rect(100, 200, 100, 30),
+		'shape': pygame.Rect(100, 200, 75, 30),
 		'state': False,
 		'text': 'On',
 		'rule': '2InARow'
 	}
 	toggle_rect_sandwich = {
-		'shape': pygame.Rect(100, 250, 100, 31),
+		'shape': pygame.Rect(100, 250, 75, 31),
 		'state': False,
 		'text': 'On',
 		'rule': 'sandwich'
 	}
 	toggle_rect_addTo10 = {
-		'shape': pygame.Rect(100, 300, 100, 32),
+		'shape': pygame.Rect(100, 300, 75, 32),
 		'state': False,
 		'text': 'On',
 		'rule': 'addTo10'
 	}		
 	toggle_rect_sandwich10 = {
-		'shape': pygame.Rect(100, 350, 100, 33),
+		'shape': pygame.Rect(100, 350, 75, 33),
 		'state': False,
 		'text': 'On',
 		'rule': 'sandwich10'
 	}
 	toggle_rect_marriage = {
-		'shape': pygame.Rect(100, 400, 100, 34),
+		'shape': pygame.Rect(100, 400, 75, 34),
 		'state': False,
 		'text': 'On',
 		'rule': 'marriage'
 	}
 	toggle_rect_divorce = {
-		'shape': pygame.Rect(100, 450, 100, 35),
+		'shape': pygame.Rect(100, 450, 75, 35),
 		'state': False,
 		'text': 'On',
 		'rule': 'divorce'
 	}
 	toggle_rect_topBottom = {
-		'shape': pygame.Rect(100, 500, 100, 36),
+		'shape': pygame.Rect(100, 500, 75, 36),
 		'state': False,
 		'text': 'On',
 		'rule': 'topBottom'
 	}
 	toggle_rect_topBottomAdd = {
-		'shape': pygame.Rect(100, 550, 100, 37),
+		'shape': pygame.Rect(100, 550, 75, 37),
 		'state': False,
 		'text': 'On',
 		'ruke': 'topBottomAdd'
 	}
 	toggle_rect_topBottomDiv = {
-		'shape': pygame.Rect(100, 600, 100, 38),
+		'shape': pygame.Rect(100, 600, 75, 38),
 		'state': False,
 		'text': 'On',
 		'rule': 'topBottomDiv'
 	}
 	toggle_rect_consec4 = {
-		'shape': pygame.Rect(100, 650, 100, 39),
+		'shape': pygame.Rect(100, 650, 75, 39),
 		'state': False,
 		'text': 'On',
 		'rule': 'consec4'
@@ -209,6 +208,30 @@ def configuration_screen():
 		text_rect = text_surface.get_rect(center=toggle_button['shape'].center)
 		window.blit(text_surface, text_rect)
 
+	# Toggle Labels 
+	text_rule_2InARow = font.render("2 In a Row", True, (255,255,255))
+	text_rule_sandwich = font.render("Sandwhich", True, (255,255,255))
+	text_rule_addTo10 = font.render("Add to 10", True, (255,255,255))
+	text_rule_sandwich10= font.render("Sandwhich 10", True, (255,255,255))
+	text_rule_marriage = font.render("Marriage", True, (255,255,255))
+	text_rule_divorce = font.render("Divorce", True, (255,255,255))
+	text_rule_topBottom = font.render("Top Bottolm", True, (255,255,255))
+	text_rule_topBottomAdd = font.render("Top Bottom Add", True, (255,255,255))
+	text_rule_topBottomDiv = font.render("Top Bottom Div", True, (255,255,255))
+	text_rule_consec4 = font.render("Consecutive 4", True, (255,255,255))
+
+	toggle_labels = [text_rule_2InARow , text_rule_sandwich, 
+			text_rule_addTo10, text_rule_sandwich10, 
+			text_rule_marriage, text_rule_divorce,
+			text_rule_topBottom, text_rule_topBottomAdd, 
+			text_rule_topBottomDiv,text_rule_consec4]
+	
+	toggle_value_y = 200
+	for toggle_label in toggle_labels:
+		window.blit(toggle_label, (200, toggle_value_y))
+		toggle_value_y += 50
+
+	
 	run = True
 	while run: 
 		MENU_MOUSE_POS = pygame.mouse.get_pos()
