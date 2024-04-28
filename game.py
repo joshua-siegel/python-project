@@ -91,6 +91,6 @@ def game_screen():
         pygame.display.update()
 
         if gameEngine.state == GameState.SLAPPING or gameEngine.state == GameState.FACE:
-            pygame.time.delay(3000)
+            pygame.time.delay(1000)
             gameEngine.state = GameState.PLAYING
     pygame.quit()
