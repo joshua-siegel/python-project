@@ -79,7 +79,6 @@ def show_instructions():
 	window.fill((202, 228, 241))
 
 	textHead = fontHead.render("Instructions", True, (255,255,255))
-	textBody = fontBody.render("meow meow meow\n cows cows cows\n", True, (255,255,255))
 
 	# load button 
 	back_btn_img = pygame.image.load('images/backbtn.png').convert_alpha()
@@ -89,17 +88,35 @@ def show_instructions():
 
 	window.blit(textHead, (100, 100))
 
-	textRules = ["1. CATS",
-				"2. DOGS"]
-	yValue = 200
-
+	textRules = ["SLAP CONDITIONS",
+				"Double: When two consecutive cards of the same rank are played",
+				"Sandwich: When two cards of the same rank are separated by one card of a different rank",
+				"Add to 10: ",
+				"Sandwhich 10: ",
+				"Marriage: When a King and a Queen are played consecutively, regardless of suit.",
+				"Divorce: ",
+				"Top Bottom: ",
+				"Top Bottom Add: ",
+				"Top Bottom Div: ",
+				"Consecutive 4: ",
+				]
+	
+	objective = ["OBJECTIVE", "Win all the cards. Players win cards by slapping the pile when certain conditions are met."]
+	yValue = 280
+	yValue2 = 200
+	# print objective
+	for line in objective: 
+		ruleText = font.render(line, True, (255,255,255))
+		ruleCoord = (100, yValue2)
+		window.blit(ruleText, ruleCoord)
+		yValue2 += 20
+		
 	# print instructions
 	for line in textRules: 
-		ruleText = fontBody.render(line, True, (255,255,255))
+		ruleText = font.render(line, True, (255,255,255))
 		ruleCoord = (100, yValue)
 		window.blit(ruleText, ruleCoord)
-
-		yValue += 50 
+		yValue += 25
 
 	run = True
 	while run: 
@@ -126,13 +143,15 @@ def configuration_screen():
 	window.fill((202, 228, 241))
 
 	textHead = fontHead.render("Rule Modifications", True, (255,255,255))
+	window.blit(textHead, (100, 50))
 
-	# load play button 
+	# load play and back button 
 	play_img = pygame.image.load('images/play.png').convert_alpha()
+	back_btn_img = pygame.image.load('images/backbtn.png').convert_alpha()
 
 	# create button instances
 	play_button = Button(700, 500, play_img, 0.4)
-	window.blit(textHead, (100, 50))
+	back_button = Button(700, 300, back_btn_img, 0.85)
 
 	# Toggle buttons
 	toggle_rect_2InARow = {
@@ -218,7 +237,7 @@ def configuration_screen():
 	text_rule_sandwich10= font.render("Sandwhich       ", True, (255,255,255))
 	text_rule_marriage = font.render("Marriage", True, (255,255,255))
 	text_rule_divorce = font.render("Divorce", True, (255,255,255))
-	text_rule_topBottom = font.render("Top Bottolm", True, (255,255,255))
+	text_rule_topBottom = font.render("Top Bottom", True, (255,255,255))
 	text_rule_topBottomAdd = font.render("Top Bottom Add", True, (255,255,255))
 	text_rule_topBottomDiv = font.render("Top Bottom Div", True, (255,255,255))
 	text_rule_consec4 = font.render("Consecutive 4", True, (255,255,255))
@@ -334,15 +353,19 @@ def configuration_screen():
 
 		if play_button.draw(window):
 			print('PLAY')
+		if back_button.draw(window):
+			print('BACK')
 		
 		# event handlers
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
 				run = False
 				break
-			if play_button.checkForInput(MENU_MOUSE_POS):
-				game_screen()
 			elif event.type == pygame.MOUSEBUTTONDOWN:
+				if play_button.checkForInput(MENU_MOUSE_POS):
+					game_screen()				
+				if back_button.checkForInput(MENU_MOUSE_POS):
+					main_menu()
 				for toggle_button in toggle_buttons:
 					# Update toggle state if clicked
 					if toggle_button['shape'].collidepoint(event.pos):
