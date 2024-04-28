@@ -4,6 +4,7 @@ from game import *
 
 
 pygame.init()
+game_rules = Rules()
 
 screen_height = 768
 screen_width = 1024
@@ -70,7 +71,7 @@ def main_menu():
 	pygame.quit()
 
 def play_game():
-	configuration_screen()	# game_screen()
+	configuration_screen()
 
 def show_instructions():
 	window.fill((202, 228, 241))
@@ -122,7 +123,6 @@ def configuration_screen():
 	window.fill((202, 228, 241))
 
 	textHead = fontHead.render("Rule Modifications", True, (255,255,255))
-	textBody = fontBody.render("meow meow meow\n cows cows cows\n", True, (255,255,255))
 
 	#load button 
 	play_img = pygame.image.load('images/play.png').convert_alpha()
@@ -137,52 +137,62 @@ def configuration_screen():
 	toggle_rect_2InARow = {
 		'shape': pygame.Rect(100, 200, 100, 30),
 		'state': False,
-		'text': 'Off'
+		'text': 'On',
+		'rule': '2InARow'
 	}
 	toggle_rect_sandwich = {
 		'shape': pygame.Rect(100, 250, 100, 31),
 		'state': False,
-		'text': 'Off'
+		'text': 'On',
+		'rule': 'sandwich'
 	}
 	toggle_rect_addTo10 = {
 		'shape': pygame.Rect(100, 300, 100, 32),
 		'state': False,
-		'text': 'Off'
+		'text': 'On',
+		'rule': 'addTo10'
 	}		
 	toggle_rect_sandwich10 = {
 		'shape': pygame.Rect(100, 350, 100, 33),
 		'state': False,
-		'text': 'Off'
+		'text': 'On',
+		'rule': 'sandwich10'
 	}
 	toggle_rect_marriage = {
 		'shape': pygame.Rect(100, 400, 100, 34),
 		'state': False,
-		'text': 'Off'
+		'text': 'On',
+		'rule': 'marriage'
 	}
 	toggle_rect_divorce = {
 		'shape': pygame.Rect(100, 450, 100, 35),
 		'state': False,
-		'text': 'Off'
+		'text': 'On',
+		'rule': 'divorce'
 	}
 	toggle_rect_topBottom = {
 		'shape': pygame.Rect(100, 500, 100, 36),
 		'state': False,
-		'text': 'Off'
+		'text': 'On',
+		'rule': 'topBottom'
 	}
 	toggle_rect_topBottomAdd = {
 		'shape': pygame.Rect(100, 550, 100, 37),
 		'state': False,
-		'text': 'Off'
+		'text': 'On',
+		'ruke': 'topBottomAdd'
 	}
 	toggle_rect_topBottomDiv = {
 		'shape': pygame.Rect(100, 600, 100, 38),
 		'state': False,
-		'text': 'Off'
+		'text': 'On',
+		'rule': 'topBottomDiv'
 	}
 	toggle_rect_consec4 = {
 		'shape': pygame.Rect(100, 650, 100, 39),
 		'state': False,
-		'text': 'Off'
+		'text': 'On',
+		'rule': 'consec4'
 	}
 
 	toggle_buttons = [toggle_rect_2InARow, toggle_rect_sandwich, 
@@ -192,8 +202,6 @@ def configuration_screen():
 			toggle_rect_topBottomDiv,toggle_rect_consec4]
 
 	for toggle_button in toggle_buttons:
-		# print(toggle_button)
-
 		pygame.draw.rect(window, gray, toggle_button['shape'])
 		pygame.draw.rect(window, black, toggle_button['shape'], 2)
 
@@ -213,14 +221,14 @@ def configuration_screen():
 			if event.type == pygame.QUIT:
 				run = False
 				break
+			if play_button.checkForInput(MENU_MOUSE_POS):
+				game_screen()
 			if event.type == pygame.MOUSEBUTTONDOWN:
 				for toggle_button in toggle_buttons:
-					# if toggle_button['shape'].checkForInput(MENU_MOUSE_POS):
 					if toggle_button['shape'].collidepoint(event.pos):
-						print(toggle_button)
-						print(not toggle_button['state'])
 						toggle_button['state'] = not toggle_button['state']
-						toggle_button['text'] = "On" if toggle_button['state'] else "Off"
+						toggle_button['text'] = "Off" if toggle_button['state'] else "On"
+						print(f'{toggle_button['rule']} {toggle_button['text']}')
 						pygame.draw.rect(window, gray, toggle_button['shape'])
 						pygame.draw.rect(window, black, toggle_button['shape'], 2)
 
@@ -228,8 +236,12 @@ def configuration_screen():
 						text_rect = text_surface.get_rect(center=toggle_button['shape'].center)
 						window.blit(text_surface, text_rect)
 
+						change_rule(toggle_button['rule'], toggle_button['state'])
 		pygame.display.flip()
 	pygame.quit()
+
+def change_rule(rule_name, rule_state):
+	game_rules.slapRules[rule_name] = rule_state
 
 main_menu()
 pygame.quit()
