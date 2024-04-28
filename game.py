@@ -71,7 +71,7 @@ def game_screen():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
-                pygame.quit()
+                break
             if event.type == pygame.KEYDOWN:
                 key = event.key
 
@@ -82,3 +82,4 @@ def game_screen():
         if gameEngine.state == GameState.SLAPPING or gameEngine.state == GameState.FACE:
             pygame.time.delay(3000)
             gameEngine.state = GameState.PLAYING
+    pygame.quit()
