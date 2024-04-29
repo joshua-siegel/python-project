@@ -28,6 +28,8 @@ pygame.display.set_caption("Rat Slapper")
 
 # HOME SCREEN
 def main_menu():
+	print(Rules.slapRules)
+
 	# logo image
 	logo_img = pygame.image.load('images/logo.png')
 	logo_img = pygame.transform.scale(logo_img, (850, 300))
@@ -255,29 +257,6 @@ def configuration_screen():
 	for toggle_label in toggle_labels:
 		window.blit(toggle_label, (200, toggle_value_y))
 		toggle_value_y += 50
- 
-	###  ____ IN A ROW VALUE CHANGER ###
-	# num_in_a_row = 1
-	# # Draw number selector box
-	# selector_box_1 = pygame.Rect(200, 200, 30, 30)
-	# pygame.draw.rect(window, white, selector_box_1)
-	# pygame.draw.rect(window, black, selector_box_1, 2)
-
-	# # Draw selected number
-	# text_surface = font.render(str(num_in_a_row), True, black)
-	# text_rect = text_surface.get_rect(center=selector_box_1.center)
-	# window.blit(text_surface, text_rect)
-
-	# # Draw up and down arrows
-	# down_arrow_rect = pygame.Rect(203, 235, 20, 10)
-	# up_arrow_rect = pygame.Rect(203, 185, 20, 10)
-	# pygame.draw.polygon(window, black, [(up_arrow_rect.centerx, up_arrow_rect.top),
-	# 									(up_arrow_rect.left + 5, up_arrow_rect.bottom),
-	# 									(up_arrow_rect.right - 5, up_arrow_rect.bottom)])
-	
-	# pygame.draw.polygon(window, black, [(down_arrow_rect.centerx, down_arrow_rect.bottom),
-	# 									(down_arrow_rect.left + 5, down_arrow_rect.top),
-	# 									(down_arrow_rect.right - 5, down_arrow_rect.top)])
 	
 	### ADD TO ___ CHANGER ###
 	add_to_num = 10
@@ -383,23 +362,6 @@ def configuration_screen():
 
 						# change_rule(toggle_button['rule'], toggle_button['state'])
 				if event.button == 1: 
-					### ___ IN A ROW ###
-					# Check if the click is within the up or down arrow
-					# if up_arrow_rect.collidepoint(event.pos):
-					# 	if num_in_a_row < 10:
-					# 		num_in_a_row += 1
-					# 	print(num_in_a_row, 'in a row')
-					# elif down_arrow_rect.collidepoint(event.pos):
-					# 	if num_in_a_row > 1 : 
-					# 		num_in_a_row -= 1
-					# 	print(num_in_a_row, 'in a row')
-					# Draw selected number
-					# pygame.draw.rect(window, white, selector_box_1)
-					# pygame.draw.rect(window, black, selector_box_1, 2)
-					# text_surface = font.render(str(num_in_a_row), True, black)
-					# text_rect = text_surface.get_rect(center=selector_box_1.center)
-					# window.blit(text_surface, text_rect)
-
 					### ADD TO ___ ###
 					# Check if the click is within the up or down arrow
 					if up_arrow_rect_2.collidepoint(event.pos):
