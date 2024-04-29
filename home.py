@@ -11,7 +11,7 @@ bounds = (screen_width, screen_height)
 window = pygame.display.set_mode(bounds)
 
 # colors / aesthetics
-backgroundColor = (202, 228, 241)
+backgroundColor = (100, 151, 243)
 white = (255,255,255)
 black = (0, 0, 0)
 gray = (200, 200, 200)
@@ -76,7 +76,7 @@ def play_game():
 
 # INSTRUCTIONS SCREEN
 def show_instructions():
-	window.fill((202, 228, 241))
+	window.fill(backgroundColor)
 
 	textHead = fontHead.render("Instructions", True, (255,255,255))
 
@@ -140,7 +140,7 @@ def show_instructions():
 	
 # CONFIGURATION SCREEN
 def configuration_screen():
-	window.fill((202, 228, 241))
+	window.fill(backgroundColor)
 
 	textHead = fontHead.render("Rule Modifications", True, (255,255,255))
 	window.blit(textHead, (100, 50))
@@ -156,64 +156,66 @@ def configuration_screen():
 	# Toggle buttons
 	toggle_rect_2InARow = {
 		'shape': pygame.Rect(100, 200, 75, 30),
-		'state': False,
+		'state': True,
 		'text': 'On',
 		'rule': '2InARow'
 	}
 	toggle_rect_sandwich = {
-		'shape': pygame.Rect(100, 250, 75, 31),
-		'state': False,
+		'shape': pygame.Rect(100, 250, 75, 30),
+		'state': True,
 		'text': 'On',
 		'rule': 'sandwich'
 	}
 	toggle_rect_addTo10 = {
-		'shape': pygame.Rect(100, 300, 75, 32),
-		'state': False,
+		'shape': pygame.Rect(100, 300, 75, 30),
+		'state': True,
 		'text': 'On',
 		'rule': 'addTo10'
 	}		
 	toggle_rect_sandwich10 = {
-		'shape': pygame.Rect(100, 350, 75, 33),
-		'state': False,
+		'shape': pygame.Rect(100, 350, 75, 30),
+		'state': True,
 		'text': 'On',
 		'rule': 'sandwich10'
 	}
 	toggle_rect_marriage = {
-		'shape': pygame.Rect(100, 400, 75, 34),
+		'shape': pygame.Rect(100, 400, 75, 30),
 		'state': False,
-		'text': 'On',
+		'text': 'Off',
 		'rule': 'marriage'
 	}
 	toggle_rect_divorce = {
-		'shape': pygame.Rect(100, 450, 75, 35),
+		'shape': pygame.Rect(100, 450, 75, 30),
 		'state': False,
-		'text': 'On',
+		'text': 'Off',
 		'rule': 'divorce'
 	}
 	toggle_rect_topBottom = {
-		'shape': pygame.Rect(100, 500, 75, 36),
-		'state': False,
+		'shape': pygame.Rect(100, 500, 75, 30),
+		'state': True,
 		'text': 'On',
 		'rule': 'topBottom'
 	}
 	toggle_rect_topBottomAdd = {
-		'shape': pygame.Rect(100, 550, 75, 37),
-		'state': False,
+		'shape': pygame.Rect(100, 550, 75, 30),
+		'state': True,
 		'text': 'On',
 		'ruke': 'topBottomAdd'
 	}
 	toggle_rect_topBottomDiv = {
 		'shape': pygame.Rect(100, 600, 75, 38),
-		'state': False,
+		'state': True,
 		'text': 'On',
 		'rule': 'topBottomDiv'
 	}
 	toggle_rect_consec4 = {
-		'shape': pygame.Rect(100, 650, 75, 39),
-		'state': False,
+		'shape': pygame.Rect(100, 650, 75, 30),
+		'state': True,
 		'text': 'On',
 		'rule': 'consec4'
 	}
+
+	status = {False: "Off", True: "On"}
 
 	toggle_buttons = [toggle_rect_2InARow, toggle_rect_sandwich, 
 			toggle_rect_addTo10, toggle_rect_sandwich10, 
@@ -231,8 +233,8 @@ def configuration_screen():
 		window.blit(text_surface, text_rect)
 
 	# Toggle Labels 
-	text_rule_2InARow = font.render("      In a Row", True, (255,255,255))
-	text_rule_sandwich = font.render("Sandwhich", True, (255,255,255))
+	text_rule_2InARow = font.render("Two In a Row", True, (255,255,255))
+	text_rule_sandwich = font.render("Sandwich", True, (255,255,255))
 	text_rule_addTo10 = font.render("Add to       ", True, (255,255,255))
 	text_rule_sandwich10= font.render("Sandwhich       ", True, (255,255,255))
 	text_rule_marriage = font.render("Marriage", True, (255,255,255))
@@ -255,37 +257,37 @@ def configuration_screen():
 		toggle_value_y += 50
  
 	###  ____ IN A ROW VALUE CHANGER ###
-	num_in_a_row = 1
-	# Draw number selector box
-	selector_box_1 = pygame.Rect(200, 200, 30, 30)
-	pygame.draw.rect(window, white, selector_box_1)
-	pygame.draw.rect(window, black, selector_box_1, 2)
+	# num_in_a_row = 1
+	# # Draw number selector box
+	# selector_box_1 = pygame.Rect(200, 200, 30, 30)
+	# pygame.draw.rect(window, white, selector_box_1)
+	# pygame.draw.rect(window, black, selector_box_1, 2)
 
-	# Draw selected number
-	text_surface = font.render(str(num_in_a_row), True, black)
-	text_rect = text_surface.get_rect(center=selector_box_1.center)
-	window.blit(text_surface, text_rect)
+	# # Draw selected number
+	# text_surface = font.render(str(num_in_a_row), True, black)
+	# text_rect = text_surface.get_rect(center=selector_box_1.center)
+	# window.blit(text_surface, text_rect)
 
-	# Draw up and down arrows
-	down_arrow_rect = pygame.Rect(203, 235, 20, 10)
-	up_arrow_rect = pygame.Rect(203, 185, 20, 10)
-	pygame.draw.polygon(window, black, [(up_arrow_rect.centerx, up_arrow_rect.top),
-										(up_arrow_rect.left + 5, up_arrow_rect.bottom),
-										(up_arrow_rect.right - 5, up_arrow_rect.bottom)])
+	# # Draw up and down arrows
+	# down_arrow_rect = pygame.Rect(203, 235, 20, 10)
+	# up_arrow_rect = pygame.Rect(203, 185, 20, 10)
+	# pygame.draw.polygon(window, black, [(up_arrow_rect.centerx, up_arrow_rect.top),
+	# 									(up_arrow_rect.left + 5, up_arrow_rect.bottom),
+	# 									(up_arrow_rect.right - 5, up_arrow_rect.bottom)])
 	
-	pygame.draw.polygon(window, black, [(down_arrow_rect.centerx, down_arrow_rect.bottom),
-										(down_arrow_rect.left + 5, down_arrow_rect.top),
-										(down_arrow_rect.right - 5, down_arrow_rect.top)])
+	# pygame.draw.polygon(window, black, [(down_arrow_rect.centerx, down_arrow_rect.bottom),
+	# 									(down_arrow_rect.left + 5, down_arrow_rect.top),
+	# 									(down_arrow_rect.right - 5, down_arrow_rect.top)])
 	
 	### ADD TO ___ CHANGER ###
-	add_to_num = 1
+	add_to_num = 10
 	# Draw number selector box
 	selector_box_2 = pygame.Rect(275, 300, 30, 30)
 	pygame.draw.rect(window, white, selector_box_2)
 	pygame.draw.rect(window, black, selector_box_2, 2)
 
 	# Draw selected number
-	text_surface = font.render(str(num_in_a_row), True, black)
+	text_surface = font.render(str(add_to_num), True, black)
 	text_rect = text_surface.get_rect(center=selector_box_2.center)
 	window.blit(text_surface, text_rect)
 
@@ -302,14 +304,14 @@ def configuration_screen():
 	
 
 	### SANDWICH ___ ###
-	sandwich_num = 1
+	sandwich_num = 2
 	# Draw number selector box
 	selector_box_3 = pygame.Rect(310, 350, 30, 30)
 	pygame.draw.rect(window, white, selector_box_3)
 	pygame.draw.rect(window, black, selector_box_3, 2)
 
 	# Draw selected number
-	text_surface = font.render(str(num_in_a_row), True, black)
+	text_surface = font.render(str(sandwich_num), True, black)
 	text_rect = text_surface.get_rect(center=selector_box_3.center)
 	window.blit(text_surface, text_rect)
 
@@ -325,14 +327,14 @@ def configuration_screen():
 										(down_arrow_rect_3.right - 5, down_arrow_rect_3.top)])
 	
 	### CONSECUTIVE ___ ###
-	consecutive_num = 1
+	consecutive_num = 4
 	# Draw number selector box
 	selector_box_4 = pygame.Rect(315, 650, 30, 30)
 	pygame.draw.rect(window, white, selector_box_4)
 	pygame.draw.rect(window, black, selector_box_4, 2)
 
 	# Draw selected number
-	text_surface = font.render(str(num_in_a_row), True, black)
+	text_surface = font.render(str(consecutive_num), True, black)
 	text_rect = text_surface.get_rect(center=selector_box_4.center)
 	window.blit(text_surface, text_rect)
 
@@ -370,7 +372,7 @@ def configuration_screen():
 					# Update toggle state if clicked
 					if toggle_button['shape'].collidepoint(event.pos):
 						toggle_button['state'] = not toggle_button['state']
-						toggle_button['text'] = "Off" if toggle_button['state'] else "On"
+						toggle_button['text'] = status[toggle_button['state']]
 						print(f'{toggle_button['rule']} {toggle_button['text']}')
 						pygame.draw.rect(window, gray, toggle_button['shape'])
 						pygame.draw.rect(window, black, toggle_button['shape'], 2)
@@ -379,24 +381,24 @@ def configuration_screen():
 						text_rect = text_surface.get_rect(center=toggle_button['shape'].center)
 						window.blit(text_surface, text_rect)
 
-						change_rule(toggle_button['rule'], toggle_button['state'])
+						# change_rule(toggle_button['rule'], toggle_button['state'])
 				if event.button == 1: 
 					### ___ IN A ROW ###
 					# Check if the click is within the up or down arrow
-					if up_arrow_rect.collidepoint(event.pos):
-						if num_in_a_row < 10:
-							num_in_a_row += 1
-						print(num_in_a_row, 'in a row')
-					elif down_arrow_rect.collidepoint(event.pos):
-						if num_in_a_row > 1 : 
-							num_in_a_row -= 1
-						print(num_in_a_row, 'in a row')
+					# if up_arrow_rect.collidepoint(event.pos):
+					# 	if num_in_a_row < 10:
+					# 		num_in_a_row += 1
+					# 	print(num_in_a_row, 'in a row')
+					# elif down_arrow_rect.collidepoint(event.pos):
+					# 	if num_in_a_row > 1 : 
+					# 		num_in_a_row -= 1
+					# 	print(num_in_a_row, 'in a row')
 					# Draw selected number
-					pygame.draw.rect(window, white, selector_box_1)
-					pygame.draw.rect(window, black, selector_box_1, 2)
-					text_surface = font.render(str(num_in_a_row), True, black)
-					text_rect = text_surface.get_rect(center=selector_box_1.center)
-					window.blit(text_surface, text_rect)
+					# pygame.draw.rect(window, white, selector_box_1)
+					# pygame.draw.rect(window, black, selector_box_1, 2)
+					# text_surface = font.render(str(num_in_a_row), True, black)
+					# text_rect = text_surface.get_rect(center=selector_box_1.center)
+					# window.blit(text_surface, text_rect)
 
 					### ADD TO ___ ###
 					# Check if the click is within the up or down arrow
