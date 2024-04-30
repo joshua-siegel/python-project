@@ -197,14 +197,14 @@ class Rules:
         self.slapRules = {
             "2InARow": True,
             "sandwich": True,
-            "addTo10": True,
-            "sandwich10": True,
-            "marriage": True,
-            "divorce": True,
-            "topBottom": True,
+            "addTo10": False,
+            "sandwich10": False,
+            "marriage": False,
+            "divorce": False,
+            "topBottom": False,
             "topBottomAdd": False,
             "topBottomDiv": False,
-            "consec4": True
+            "consec4": False
             }
         self.slapMods = {
             "sandLength": 2,
@@ -231,6 +231,12 @@ class Rules:
             "king": 3,
             "ace": 4,
             }
+    
+    def slapRuleToggle(self, rule, state):
+        self.slapRules[rule] = state
+
+    def slapModToggle(self, mod, num):
+        self.slapMods[mod] = num
 
 # Button Model
 class Button():

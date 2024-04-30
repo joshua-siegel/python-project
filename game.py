@@ -10,10 +10,6 @@ pygame.display.set_caption("Rat Slapper")
 
 def game_screen():
     gameEngine = RatEngine()
-    # pile = 
-    Pile()
-    # rules = 
-    Rules()
 
     # Load back of card image
     cardBack = pygame.image.load('images/BACK.png')

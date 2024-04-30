@@ -27,7 +27,8 @@ class RatEngine:
         self.deal()
         self.currentPlayer = self.player1
         self.state = GameState.PLAYING
-        self.rules = Rules()
+        from home import game_rules
+        self.rules = game_rules
 
     # Deals the cards
     def deal(self):
@@ -83,6 +84,7 @@ class RatEngine:
 
         # Check Slap Result
         if isSlap and slapCaller:
+            print(self.rules.slapRules)
             self.winRound(slapCaller)
             self.result = {
                 "winner": slapCaller,
@@ -91,6 +93,7 @@ class RatEngine:
             }
             self.winRound(slapCaller)
         elif not isSlap and slapCaller:
+            print(self.rules.slapRules)
             self.result = {
                 "winner": nonSlapCaller,
                 "isSlap": False,

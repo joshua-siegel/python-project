@@ -3,6 +3,8 @@ from models import *
 from game import * 
 
 pygame.init()
+
+# Create rule instance for current game
 game_rules = Rules()
 
 screen_height = 768
@@ -24,7 +26,6 @@ fontBody = pygame.font.SysFont('comicsans', 30)
 font = pygame.font.SysFont('comicsans', 20)
 
 pygame.display.set_caption("Rat Slapper")
-
 
 # HOME SCREEN
 def main_menu():
@@ -93,18 +94,22 @@ def show_instructions():
 	textRules = ["SLAP CONDITIONS",
 				"Double: When two consecutive cards of the same rank are played",
 				"Sandwich: When two cards of the same rank are separated by one card of a different rank",
-				"Add to 10: ",
-				"Sandwhich 10: ",
+				"Add to 10: When two consecutive cards add to 10",
+				"Sandwich 10: When two cards that add to 10 are separated by another card",
 				"Marriage: When a King and a Queen are played consecutively, regardless of suit.",
-				"Divorce: ",
-				"Top Bottom: ",
-				"Top Bottom Add: ",
-				"Top Bottom Div: ",
-				"Consecutive 4: ",
+				"Divorce: When a King and a Queen are separated by another card",
+				"Top Bottom: When two cards of the same rank appear on the top and bottom of the pile",
+				"Top Bottom Add: When two cards that add to 10 appear on the top and bottom of the pile",
+				"Top Bottom Divorce: When a King and a Queen appear on the top and bottom of the pile",
+				"Consecutive 4: When four consecutively ranked cards are played in a row"
 				]
 	
-	objective = ["OBJECTIVE", "Win all the cards. Players win cards by slapping the pile when certain conditions are met."]
-	yValue = 280
+	objective = ["OBJECTIVE:", 
+			  	"Win the deck. Players win cards by slapping the pile when certain conditions are met or by playing ",
+				"a face card [J,Q,K,A] and the other player cannot slap or return another face card or 10 in ", 
+				"[1,2,3,4] respective chances."
+			  	]
+	yValue = 300
 	yValue2 = 200
 	# print objective
 	for line in objective: 
@@ -141,7 +146,12 @@ def show_instructions():
 	pygame.quit()
 	
 # CONFIGURATION SCREEN
-def configuration_screen():
+def configuration_screen(gameScreen = False):
+	# the __name__ == '__main__' script at line 479 definitely doesn't hide any bugs involving having to click Play twice from the configuration menu :)
+	# we're just running the game screen for a split second because why not?
+	if gameScreen == True:
+		game_screen()
+
 	window.fill(backgroundColor)
 
 	textHead = fontHead.render("Rule Modifications", True, (255,255,255))
@@ -151,7 +161,7 @@ def configuration_screen():
 	play_img = pygame.image.load('images/play.png').convert_alpha()
 	back_btn_img = pygame.image.load('images/backbtn.png').convert_alpha()
 
-	# create button instances
+	# create button and rule instances
 	play_button = Button(700, 500, play_img, 0.4)
 	back_button = Button(700, 300, back_btn_img, 0.85)
 
@@ -170,8 +180,8 @@ def configuration_screen():
 	}
 	toggle_rect_addTo10 = {
 		'shape': pygame.Rect(100, 300, 75, 30),
-		'state': True,
-		'text': 'On',
+		'state': False,
+		'text': 'Off',
 		'rule': 'addTo10'
 	}		
 	toggle_rect_sandwich10 = {
@@ -194,8 +204,8 @@ def configuration_screen():
 	}
 	toggle_rect_topBottom = {
 		'shape': pygame.Rect(100, 500, 75, 30),
-		'state': True,
-		'text': 'On',
+		'state': False,
+		'text': 'Off',
 		'rule': 'topBottom'
 	}
 	toggle_rect_topBottomAdd = {
@@ -259,8 +269,8 @@ def configuration_screen():
 		toggle_value_y += 50
 	
 	##### NUMBER SELECTORS #####
- 
- 	### SANDWICH ###
+
+	### SANDWICH ###
 	num_btwn_sandwich = 1
 	# Draw number selector box
 	selector_box_1 = pygame.Rect(300, 250, 30, 30)
@@ -282,7 +292,7 @@ def configuration_screen():
 	pygame.draw.polygon(window, black, [(down_arrow_rect_1.centerx, down_arrow_rect_1.bottom),
 										(down_arrow_rect_1.left + 5, down_arrow_rect_1.top),
 										(down_arrow_rect_1.right - 5, down_arrow_rect_1.top)])
- 
+
 	### ADD TO ___ CHANGER ###
 	add_to_num = 10
 	# Draw number selector box
@@ -369,13 +379,14 @@ def configuration_screen():
 				break
 			elif event.type == pygame.MOUSEBUTTONDOWN:
 				if play_button.checkForInput(MENU_MOUSE_POS):
-					game_screen()				
+					game_screen()		
 				if back_button.checkForInput(MENU_MOUSE_POS):
 					main_menu()
 				for toggle_button in toggle_buttons:
 					# Update toggle state if clicked
 					if toggle_button['shape'].collidepoint(event.pos):
 						toggle_button['state'] = not toggle_button['state']
+						game_rules.slapRuleToggle(toggle_button['rule'], toggle_button['state'])
 						toggle_button['text'] = status[toggle_button['state']]
 						print(f'{toggle_button['rule']} {toggle_button['text']}')
 						pygame.draw.rect(window, gray, toggle_button['shape'])
@@ -392,10 +403,12 @@ def configuration_screen():
 					if up_arrow_rect_1.collidepoint(event.pos):
 						if num_btwn_sandwich < 5:
 							num_btwn_sandwich += 1
+							game_rules.slapModToggle("sandLength", num_btwn_sandwich + 1)
 						print('num btwn sandwich', num_btwn_sandwich)
 					elif down_arrow_rect_1.collidepoint(event.pos):
 						if num_btwn_sandwich > 1 : 
 							num_btwn_sandwich -= 1
+							game_rules.slapModToggle("sandLength", num_btwn_sandwich + 1)
 						print('num btwn sandwich', num_btwn_sandwich)
 					# Draw selected number
 					pygame.draw.rect(window, white, selector_box_1)
@@ -410,10 +423,14 @@ def configuration_screen():
 					if up_arrow_rect_2.collidepoint(event.pos):
 						if add_to_num < 24:
 							add_to_num += 1
+							game_rules.slapModToggle("addTo10Sum", add_to_num)
+							game_rules.slapModToggle("sand10Sum", add_to_num)
 						print('add to num', add_to_num)
 					elif down_arrow_rect_2.collidepoint(event.pos):
 						if add_to_num > 3 : 
 							add_to_num -= 1
+							game_rules.slapModToggle("addTo10Sum", add_to_num)
+							game_rules.slapModToggle("sand10Sum", add_to_num)
 						print('add to num', add_to_num)
 					# Draw selected number
 					pygame.draw.rect(window, white, selector_box_2)
@@ -427,10 +444,12 @@ def configuration_screen():
 					if up_arrow_rect_3.collidepoint(event.pos):
 						if num_btwn_addition_sandwich < 5:
 							num_btwn_addition_sandwich += 1
+							game_rules.slapModToggle("sand10Length", num_btwn_addition_sandwich + 1)
 						print('num btwn addition sandwich', num_btwn_addition_sandwich)
 					elif down_arrow_rect_3.collidepoint(event.pos):
 						if num_btwn_addition_sandwich > 1 : 
 							num_btwn_addition_sandwich -= 1
+							game_rules.slapModToggle("sand10Length", num_btwn_addition_sandwich + 1)
 						print('num btwn addition sandwich', num_btwn_addition_sandwich)
 					# Draw selected number
 					pygame.draw.rect(window, white, selector_box_3)
@@ -444,10 +463,12 @@ def configuration_screen():
 					if up_arrow_rect_4.collidepoint(event.pos):
 						if consecutive_num < 10:
 							consecutive_num += 1
+							game_rules.slapModToggle("consecLength", consecutive_num)
 						print('consecutive', consecutive_num)
 					elif down_arrow_rect_4.collidepoint(event.pos):
 						if consecutive_num > 2 : 
 							consecutive_num -= 1
+							game_rules.slapModToggle("consecLength", consecutive_num)
 						print('consecutive', consecutive_num)
 					# Draw selected number
 					pygame.draw.rect(window, white, selector_box_4)
@@ -455,11 +476,12 @@ def configuration_screen():
 					text_surface = font.render(str(consecutive_num), True, black)
 					text_rect = text_surface.get_rect(center=selector_box_4.center)
 					window.blit(text_surface, text_rect)
-
+		
 		pygame.display.flip()
 	pygame.quit()
 
-def change_rule(rule_name, rule_state):
-	game_rules.slapRules[rule_name] = rule_state
-	
+# shhhh nothing to see here we totally imported game_rules into the engine without running this entire file again :)
+if __name__ == '__main__':
+	configuration_screen(gameScreen = True)
+
 main_menu()
