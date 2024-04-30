@@ -13,4 +13,4 @@ We enjoyed the sense of achievement from making a functional game using python.
 For the Skeletal Game Structure: https://replit.com/@ritza/SnaPy#engine.py
 For Buttons: https://www.youtube.com/watch?v=G8MYGDf_9ho
 For Everything Else Where We Had Questions: Asking ChatGPT and Microsoft Copilot how to achieve specific tasks / fix specific bugs and *why* it works
-Example: __name__ == '__main__' runs when the block is explicitly called (not imported)
+Example: __name__ == '__main__' is True when the block is explicitly called (not imported)
