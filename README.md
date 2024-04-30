@@ -1,4 +1,4 @@
-What we would add in a later update: Blitz Mode (forcing players to flip within a specific time frame), Multiplayer, Player vs. Bot (Easy, Medium, Hard), better UI, Deck Modification
+What we would add in a later update: Blitz Mode (forcing players to flip within a specific time frame), Multiplayer, Player vs. Bot (Easy, Medium, Hard), better UI, Deck Modification, More Rule Modifications
 
 Challenges: Learning classes, learning GUI/buttons, learning how a game engine works, import issues
 
